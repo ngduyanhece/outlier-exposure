@@ -170,7 +170,7 @@ def evaluate():
         logits = model(inputs)
 
         #loss = F.cross_entropy(logits, labels, size_average=False)
-        loss = F.cross_entropy(logits, labels, )
+        loss = F.cross_entropy(logits, labels)
         running_loss += loss.data.cpu().numpy()
 
         pred = logits.max(1)[1]
