@@ -125,7 +125,7 @@ class ClfGRU(nn.Module):
         return logits
 
 
-model = ClfGRU(2).cuda()
+model = ClfGRU(64).cuda()
 
 optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
 scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs)
@@ -150,7 +150,7 @@ def train():
 
         loss_ema = loss_ema * 0.9 + loss.data.cpu().numpy() * 0.1
 
-        if batch_idx % 200 == 0:
+        if batch_idx % 10 == 0:
             print('iter: {} | loss_ema: {}'.format(batch_idx, loss_ema))
 
     scheduler.step()
@@ -169,8 +169,8 @@ def evaluate():
         labels = labels.cuda()
         logits = model(inputs)
 
-        #loss = F.cross_entropy(logits, labels, size_average=False)
-        loss = F.cross_entropy(logits, labels)
+        loss = F.cross_entropy(logits, labels, size_average=False)
+        # loss = F.cross_entropy(logits, labels)
         running_loss += loss.data.cpu().numpy()
 
         pred = logits.max(1)[1]
