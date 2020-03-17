@@ -106,16 +106,28 @@ elif args.in_dist_dataset == 'trec':
 
 
 if args.oe_dataset == 'wikitext2':
-    TEXT_custom = data.Field(pad_first=True, lower=True)
+    # TEXT_custom = data.Field(pad_first=True, lower=True)
     
-    custom_data = data.TabularDataset(path='./.data/wikitext_reformatted/wikitext2_sentences',
-                                      format='csv',
-                                      fields=[('text', TEXT_custom)])
+    # custom_data = data.TabularDataset(path='./.data/wikitext_reformatted/wikitext2_sentences',
+    #                                   format='csv',
+    #                                   fields=[('text', TEXT_custom)])
 
-    TEXT_custom.build_vocab(train.text, max_size=10000)
-    print('vocab length (including special tokens):', len(TEXT_custom.vocab))
+    # TEXT_custom.build_vocab(train.text, max_size=10000)
+    # print('vocab length (including special tokens):', len(TEXT_custom.vocab))
 
-    train_iter_oe = data.BucketIterator(custom_data, batch_size=args.batch_size, repeat=False)
+    # train_iter_oe = data.BucketIterator(custom_data, batch_size=args.batch_size, repeat=False)
+    TEXT_wtxt = data.Field(pad_first=True, lower=True)
+    # make splits for data
+    train_OE, val_OE, test_OE = datasets.WikiText2.splits(TEXT_wtxt)
+
+
+    # build vocab
+    TEXT_wtxt.build_vocab(train_OE, max_size=10000)
+    print('vocab length (including special tokens):', len(TEXT_wtxt.vocab))
+
+    # make iterators
+    train_iter_oe = data.BucketIterator.splits(train, batch_size=args.batch_size, repeat=False)
+
 elif args.oe_dataset == 'wikitext103':
     TEXT_custom = data.Field(pad_first=True, lower=True)
 
