@@ -177,7 +177,7 @@ class ClfGRU(nn.Module):
         return logits
 
 
-model = ClfGRU(2).cuda()  # change to match dataset
+model = ClfGRU(64).cuda()  # change to match dataset
 
 model.load_state_dict(torch.load('./snapshots/sst/baseline/model.dict'))
 
