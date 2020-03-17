@@ -123,6 +123,8 @@ if args.oe_dataset == 'wikitext2':
     train_OE, val_OE, test_OE = datasets.WikiText2.splits(TEXT_wtxt)
 
     # build vocab
+    TEXT_sst = data.Field(pad_first=True)
+    LABEL_sst = data.Field(sequential=False)
     train_sst, val_sst, test_sst = datasets.SST.splits(
     TEXT_sst, LABEL_sst, fine_grained=False, train_subtrees=False,
     filter_pred=lambda ex: ex.label != 'neutral')
