@@ -140,6 +140,7 @@ def train():
         labels = batch.label - 1
         inputs = inputs.cuda()
         labels = labels.cuda()
+        print(labels.size())
         logits = model(inputs)
 
         loss = F.cross_entropy(logits, labels)
