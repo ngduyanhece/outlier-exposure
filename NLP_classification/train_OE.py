@@ -116,17 +116,19 @@ if args.oe_dataset == 'wikitext2':
     # print('vocab length (including special tokens):', len(TEXT_custom.vocab))
 
     # train_iter_oe = data.BucketIterator(custom_data, batch_size=args.batch_size, repeat=False)
+    # set up fields
     TEXT_wtxt = data.Field(pad_first=True, lower=True)
+
     # make splits for data
     train_OE, val_OE, test_OE = datasets.WikiText2.splits(TEXT_wtxt)
 
-
     # build vocab
-    TEXT_wtxt.build_vocab(train_OE, max_size=10000)
+    TEXT_wtxt.build_vocab(train_sst.text, max_size=10000)
     print('vocab length (including special tokens):', len(TEXT_wtxt.vocab))
 
-    # make iterators
-    train_iter_oe = data.BucketIterator.splits(train, batch_size=args.batch_size, repeat=False)
+    # create our own iterator, avoiding the calls to build_vocab in SST.iters
+    train_iter_oe, val_iter_oe, test_iter_oe = data.BPTTIterator.splits(
+    (train_OE, val_OE, test_OE), batch_size=args.batch_size, bptt_len=15, repeat=False)
 
 elif args.oe_dataset == 'wikitext103':
     TEXT_custom = data.Field(pad_first=True, lower=True)
