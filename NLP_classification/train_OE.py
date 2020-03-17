@@ -199,6 +199,7 @@ def train():
         data_loss = F.cross_entropy(logits, labels)
 
         inputs_oe = batch_oe.text.t()
+        inputs_oe = inputs_oe.cuda()
         logits_oe = model(inputs_oe)
         smax_oe = F.log_softmax(logits_oe - torch.max(logits_oe, dim=1, keepdim=True)[0], dim=1)
         oe_loss = -1 * smax_oe.mean()  # minimizing cross entropy
