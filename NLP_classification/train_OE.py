@@ -193,6 +193,8 @@ def train():
     for batch_idx, (batch, batch_oe) in enumerate(zip(iter(train_iter), iter(train_iter_oe))):
         inputs = batch.text.t()
         labels = batch.label - 1
+        inputs = inputs.cuda()
+        labels = labels.cuda()
         logits = model(inputs)
         data_loss = F.cross_entropy(logits, labels)
 
@@ -226,7 +228,8 @@ def evaluate():
     for batch_idx, batch in enumerate(iter(test_iter)):
         inputs = batch.text.t()
         labels = batch.label - 1
-
+        inputs = inputs.cuda()
+        labels = labels.cuda()
         logits = model(inputs)
 
         loss = F.cross_entropy(logits, labels, size_average=False)
