@@ -123,6 +123,9 @@ if args.oe_dataset == 'wikitext2':
     train_OE, val_OE, test_OE = datasets.WikiText2.splits(TEXT_wtxt)
 
     # build vocab
+    train_sst, val_sst, test_sst = datasets.SST.splits(
+    TEXT_sst, LABEL_sst, fine_grained=False, train_subtrees=False,
+    filter_pred=lambda ex: ex.label != 'neutral')
     TEXT_wtxt.build_vocab(train_sst.text, max_size=10000)
     print('vocab length (including special tokens):', len(TEXT_wtxt.vocab))
 
